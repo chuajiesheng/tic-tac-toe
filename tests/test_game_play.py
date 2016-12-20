@@ -20,3 +20,10 @@ def test_need_two_player():
     g.players = ['one']
     next_prompt = g.prompt()
     assert next_prompt == 'Enter name for Player 2:\n>> '
+
+
+def test_print_change_state():
+    g = GamePlay()
+    g.players = ['one']
+    assert g.next_step('two')
+    assert g.state == 'PLAY'
