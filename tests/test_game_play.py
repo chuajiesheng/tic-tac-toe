@@ -98,3 +98,10 @@ def test_change_player(gameplay_in_play):
                                         "7 | 8 | 9\n\n" \
                                         "two, choose a box to place an 'o' into\n" \
                                         ">> "
+
+
+def test_winning_combi(gameplay_in_play):
+    gameplay_in_play.options[0] = 0
+    gameplay_in_play.options[1] = 0
+    gameplay_in_play.options[2] = 0
+    assert gameplay_in_play.check_win()

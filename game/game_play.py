@@ -33,7 +33,7 @@ class GamePlay(object):
             return str(xy) if state is None else self.PLAYER_SHAPE[state]
 
         def box_state(x, y):
-            xy = (x * 3) + y
+            xy = (x * self.DEFAULT_GRID) + y
             option = self.options[xy]
             return x_or_o(xy + 1, option)
 
@@ -51,6 +51,18 @@ class GamePlay(object):
         player_name = self.players[next_player]
 
         return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[next_player])
+
+    def check_win(self):
+        def owned_by_current_player(x, y):
+            return self.options[(x * self.DEFAULT_GRID) + y] == self.current_player
+
+        def check_row(x):
+            return all([owned_by_current_player(x, y) for y in range(self.DEFAULT_GRID)])
+
+        def check_horizontal():
+            return any([check_row(x) for x in range(self.DEFAULT_GRID)])
+
+        return any([check_horizontal()])
 
     def next_step(self, resp):
         def handle_player_name(resp):
@@ -71,6 +83,7 @@ class GamePlay(object):
                 self.error = self.OPTION_TAKEN
             else:
                 self.options[option - 1] = self.current_player
+                self.check_win()
                 next_player()
 
         if self.state == 'NEW':
