@@ -1,3 +1,6 @@
+from game import State
+
+
 class GamePlay(object):
     DEFAULT_GRID = 3
     CHOICE_PROMPT = "{}\n{}, choose a box to place an '{}' into\n>> "
@@ -9,7 +12,7 @@ class GamePlay(object):
     OPTION_TAKEN = 'Option taken. Please choose another option.\n\n'
 
     def __init__(self):
-        self.state = 'NEW'
+        self.state = State()
         self.players = []
         self.options = [None] * (self.DEFAULT_GRID * self.DEFAULT_GRID)
         self.banner = ''
@@ -21,11 +24,11 @@ class GamePlay(object):
             self.banner = ''
             return banner
 
-        if self.state == 'NEW':
+        if self.state.is_new():
             no_of_players = len(self.players)
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
-        elif self.state == 'PLAY':
+        elif self.state.is_play():
             return get_banner() + self.get_grid(self.current_player)
         else:
             return get_banner()
@@ -75,20 +78,20 @@ class GamePlay(object):
         def handle_player_name(resp):
             self.players.append(resp)
             if len(self.players) >= 2:
-                self.state = 'PLAY'
+                self.state.move()
 
         def next_player():
             self.current_player = 1 if self.current_player == 0 else 0
 
         def win():
-            self.state = 'WON'
+            self.state.move()
             self.banner = 'Congratulations {}! You have won.'.format(self.players[self.current_player])
             return True
 
         def no_more_option_left():
             no_more_option = len([x for x in self.options if x is None]) < 1
             if no_more_option:
-                self.state = 'WON'
+                self.state.move()
                 self.banner = 'Game ended. No one won.'.format(self.players[self.current_player])
 
             return no_more_option
@@ -106,10 +109,10 @@ class GamePlay(object):
                 game_finished = self.current_player_won() and win()
                 game_finished or no_more_option_left() or next_player()
 
-        if self.state == 'NEW':
+        if self.state.is_new():
             handle_player_name(resp)
         else:
             handle_options(resp)
 
-        return self.state is not 'WON'
+        return not self.state.is_won()
 

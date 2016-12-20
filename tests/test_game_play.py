@@ -27,14 +27,14 @@ def test_print_change_state():
     g = GamePlay()
     g.players = ['one']
     assert g.next_step('two')
-    assert g.state == 'PLAY'
+    assert g.state.is_play()
 
 
 @pytest.fixture(scope='function')
 def gameplay_in_play():
     g = GamePlay()
     g.players = ['one', 'two']
-    g.state = 'PLAY'
+    g.state.val = 'PLAY'
     return g
 
 
