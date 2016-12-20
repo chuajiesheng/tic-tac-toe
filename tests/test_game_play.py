@@ -1,4 +1,5 @@
 from .context import GamePlay
+import pytest
 
 
 def test_prompt():
@@ -29,13 +30,19 @@ def test_print_change_state():
     assert g.state == 'PLAY'
 
 
-def test_prompt_for_play():
+@pytest.fixture(scope='module')
+def gameplay_in_play():
     g = GamePlay()
     g.players = ['one', 'two']
     g.state = 'PLAY'
-    assert g.prompt() == '1 | 2 | 3\n' \
-                         '-----------\n' \
-                         '4 | 5 | 6\n' \
-                         '-----------\n' \
-                         "7 | 8 | 9\n\n" \
-                         "one, choose a box to place an 'x' into"
+    return g
+
+
+def test_prompt_for_play(gameplay_in_play):
+    assert gameplay_in_play.prompt() == '1 | 2 | 3\n' \
+                                        '-----------\n' \
+                                        '4 | 5 | 6\n' \
+                                        '-----------\n' \
+                                        "7 | 8 | 9\n\n" \
+                                        "one, choose a box to place an 'x' into\n" \
+                                        " >>"
