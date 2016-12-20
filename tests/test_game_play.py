@@ -45,18 +45,18 @@ def test_prompt_for_play(gameplay_in_play):
                                         '-----------\n' \
                                         "7 | 8 | 9\n\n" \
                                         "one, choose a box to place an 'x' into\n" \
-                                        " >>"
+                                        ">> "
+
 
 def test_grid_with_one_answer(gameplay_in_play):
     gameplay_in_play.options[4] = 0
-    print(gameplay_in_play.options)
     assert gameplay_in_play.prompt() == '1 | 2 | 3\n' \
                                         '-----------\n' \
                                         '4 | x | 6\n' \
                                         '-----------\n' \
                                         "7 | 8 | 9\n\n" \
                                         "one, choose a box to place an 'x' into\n" \
-                                        " >>"
+                                        ">> "
 
 def test_input_after_prompt(gameplay_in_play):
     gameplay_in_play.next_step('2')

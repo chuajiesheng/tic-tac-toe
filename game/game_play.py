@@ -1,6 +1,6 @@
 class GamePlay(object):
     DEFAULT_GRID = 3
-    CHOICE_PROMPT = "{}\n{}, choose a box to place an '{}' into\n >>"
+    CHOICE_PROMPT = "{}\n{}, choose a box to place an '{}' into\n>> "
     PLAYER_SHAPE = {
         0: 'x',
         1: 'o'
