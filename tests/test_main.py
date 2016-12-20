@@ -3,22 +3,20 @@ from .context import Main
 
 class NewGamePlay:
     def __init__(self):
-        self.prompt_called = False
-        self.next_step_called = False
-        self.next_step_called_with = None
+        pass
 
-    def prompt(self):
-        self.prompt_called = True
-        yield 'something'
-
-    def next_step(self, something):
-        self.next_step_called = True
-        self.next_step_called_with = something
+    def next_step(self, resp):
+        pass
 
 
 def test_gameplay_prompt(monkeypatch):
     monkeypatch.setitem(__builtins__, 'input', lambda x: 'user input')
 
+    def prompt(self):
+        self.prompt_called = True
+        yield 'something'
+
+    NewGamePlay.prompt = prompt
     new_game_play = NewGamePlay()
 
     m = Main()
@@ -31,13 +29,16 @@ def test_gameplay_prompt(monkeypatch):
 def test_gameplay_next_step(monkeypatch):
     monkeypatch.setitem(__builtins__, 'input', lambda x: 'user input')
 
+    def next_step(self, resp):
+        self.resp = resp
+
+    NewGamePlay.next_step = next_step
     new_game_play = NewGamePlay()
 
     m = Main()
     m.game_play = new_game_play
 
     m.start()
-    assert new_game_play.next_step_called
-    assert new_game_play.next_step_called_with == 'user input'
+    assert new_game_play.resp == 'user input'
 
 
