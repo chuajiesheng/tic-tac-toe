@@ -10,6 +10,7 @@ class GamePlay(object):
         self.state = 'NEW'
         self.players = []
         self.options = [None] * (self.DEFAULT_GRID * self.DEFAULT_GRID)
+        self.error = ''
 
     def prompt(self):
         if self.state == 'NEW':
@@ -17,7 +18,7 @@ class GamePlay(object):
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
         else:
-            return self.get_grid(0)
+            return self.error + self.get_grid(0)
 
     def get_grid(self, player):
         def x_or_o(xy, state):
@@ -49,7 +50,10 @@ class GamePlay(object):
                 self.state = 'PLAY'
         else:
             option = resp.isdigit() and int(resp)
-            self.options[option - 1] = 0
+            if not option or option < 0 or option >= (self.DEFAULT_GRID * self.DEFAULT_GRID):
+                self.error = 'Please input a option from 1-9\n\n'
+            else:
+                self.options[option - 1] = 0
 
         return True
 
