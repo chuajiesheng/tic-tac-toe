@@ -9,7 +9,12 @@ class GamePlay(object):
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
         else:
-            pass
+            return '1 | 2 | 3\n' \
+                         '-----------\n' \
+                         '4 | 5 | 6\n' \
+                         '-----------\n' \
+                         "7 | 8 | 9\n\n" \
+                         "{}, choose a box to place an 'x' into".format(self.players[0])
 
     def next_step(self, resp):
         self.players.append(resp)
