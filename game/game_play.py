@@ -5,7 +5,8 @@ class GamePlay(object):
         0: 'x',
         1: 'o'
     }
-    INVALID_OPTION = 'Please input a option from 1-{}\n\n'
+    INVALID_OPTION = 'Please input a option from 1-{}.\n\n'
+    OPTION_TAKEN = 'Option taken. Please choose another option.\n\n'
 
     def __init__(self):
         self.state = 'NEW'
@@ -52,8 +53,13 @@ class GamePlay(object):
 
         def handle_options(resp):
             option = resp.isdigit() and int(resp)
-            if not option or option < 0 or option >= (self.DEFAULT_GRID * self.DEFAULT_GRID):
+            within_limits = option and 0 <= option <= (self.DEFAULT_GRID * self.DEFAULT_GRID)
+            already_taken = not within_limits or self.options[option - 1] is not None
+
+            if not within_limits:
                 self.error = self.INVALID_OPTION.format(self.DEFAULT_GRID * self.DEFAULT_GRID)
+            elif already_taken:
+                self.error = self.OPTION_TAKEN
             else:
                 self.options[option - 1] = 0
 
