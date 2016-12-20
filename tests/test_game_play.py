@@ -30,7 +30,7 @@ def test_print_change_state():
     assert g.state == 'PLAY'
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def gameplay_in_play():
     g = GamePlay()
     g.players = ['one', 'two']
@@ -78,3 +78,14 @@ def test_handle_already_placed_box(gameplay_in_play):
     gameplay_in_play.options[4] = 0
     gameplay_in_play.next_step('5')
     assert gameplay_in_play.prompt().startswith('Option taken. Please choose another option.')
+
+
+def test_change_player(gameplay_in_play):
+    gameplay_in_play.next_step('5')
+    assert gameplay_in_play.prompt() == '1 | 2 | 3\n' \
+                                        '-----------\n' \
+                                        '4 | x | 6\n' \
+                                        '-----------\n' \
+                                        "7 | 8 | 9\n\n" \
+                                        "two, choose a box to place an 'o' into\n" \
+                                        ">> "

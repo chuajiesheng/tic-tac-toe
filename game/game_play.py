@@ -13,16 +13,22 @@ class GamePlay(object):
         self.players = []
         self.options = [None] * (self.DEFAULT_GRID * self.DEFAULT_GRID)
         self.error = ''
+        self.current_player = 0
 
     def prompt(self):
+        def get_error():
+            current_error = self.error
+            self.error = ''
+            return current_error
+
         if self.state == 'NEW':
             no_of_players = len(self.players)
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
         else:
-            return self.error + self.get_grid(0)
+            return get_error() + self.get_grid(self.current_player)
 
-    def get_grid(self, player):
+    def get_grid(self, next_player):
         def x_or_o(xy, state):
             return str(xy) if state is None else self.PLAYER_SHAPE[state]
 
@@ -41,15 +47,19 @@ class GamePlay(object):
 
         grid_rows = [row_state(x) for x in range(self.DEFAULT_GRID)]
         grid_str = divider(len(grid_rows[0]) + 1).join(grid_rows)
-        player_name = self.players[player]
+        print(next_player)
+        player_name = self.players[next_player]
 
-        return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[player])
+        return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[next_player])
 
     def next_step(self, resp):
         def handle_player_name(resp):
             self.players.append(resp)
             if len(self.players) >= 2:
                 self.state = 'PLAY'
+
+        def next_player():
+            self.current_player = 1 if self.current_player == 0 else 0
 
         def handle_options(resp):
             option = resp.isdigit() and int(resp)
@@ -60,7 +70,8 @@ class GamePlay(object):
             elif self.options[option - 1] is not None:
                 self.error = self.OPTION_TAKEN
             else:
-                self.options[option - 1] = 0
+                self.options[option - 1] = self.current_player
+                next_player()
 
         if self.state == 'NEW':
             handle_player_name(resp)
