@@ -57,3 +57,7 @@ def test_grid_with_one_answer(gameplay_in_play):
                                         "7 | 8 | 9\n\n" \
                                         "one, choose a box to place an 'x' into\n" \
                                         " >>"
+
+def test_input_after_prompt(gameplay_in_play):
+    gameplay_in_play.next_step('2')
+    assert gameplay_in_play.options[1] == 0

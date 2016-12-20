@@ -43,9 +43,13 @@ class GamePlay(object):
         return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[player])
 
     def next_step(self, resp):
-        self.players.append(resp)
-        if len(self.players) >= 2:
-            self.state = 'PLAY'
+        if self.state == 'NEW':
+            self.players.append(resp)
+            if len(self.players) >= 2:
+                self.state = 'PLAY'
+        else:
+            option = resp.isdigit() and int(resp)
+            self.options[option - 1] = 0
 
         return True
 
