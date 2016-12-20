@@ -6,8 +6,12 @@ class GamePlay(object):
     def prompt(self):
         no_of_players = len(self.players)
         if no_of_players < 2:
-            yield 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
+            return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
 
     def next_step(self, resp):
         self.players.append(resp)
+        if len(self.players) >= 2:
+            return False
+
+        return True
 

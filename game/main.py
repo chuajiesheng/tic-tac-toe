@@ -6,9 +6,11 @@ class Main:
         self.game_play = GamePlay()
 
     def start(self):
-        for prompt in self.game_play.prompt():
-            resp = input(prompt)
-            self.game_play.next_step(resp)
+        while True:
+            resp = input(self.game_play.prompt())
+            has_next = self.game_play.next_step(resp)
+            if not has_next:
+                break
 
 
 if __name__ == '__main__':
