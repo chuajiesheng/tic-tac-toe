@@ -140,3 +140,17 @@ def test_vertical_winning_combi_3(gameplay_in_play):
     gameplay_in_play.options[5] = 0
     gameplay_in_play.options[8] = 0
     assert gameplay_in_play.check_win()
+
+
+def test_diagonal_winning_combi(gameplay_in_play):
+    gameplay_in_play.options[0] = 0
+    gameplay_in_play.options[4] = 0
+    gameplay_in_play.options[8] = 0
+    assert gameplay_in_play.check_win()
+
+
+def test_diagonal_winning_combi_2(gameplay_in_play):
+    gameplay_in_play.options[2] = 0
+    gameplay_in_play.options[4] = 0
+    gameplay_in_play.options[6] = 0
+    assert gameplay_in_play.check_win()
