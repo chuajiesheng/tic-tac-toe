@@ -5,6 +5,7 @@ class GamePlay(object):
         0: 'x',
         1: 'o'
     }
+    INVALID_OPTION = 'Please input a option from 1-{}\n\n'
 
     def __init__(self):
         self.state = 'NEW'
@@ -44,16 +45,22 @@ class GamePlay(object):
         return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[player])
 
     def next_step(self, resp):
-        if self.state == 'NEW':
+        def handle_player_name(resp):
             self.players.append(resp)
             if len(self.players) >= 2:
                 self.state = 'PLAY'
-        else:
+
+        def handle_options(resp):
             option = resp.isdigit() and int(resp)
             if not option or option < 0 or option >= (self.DEFAULT_GRID * self.DEFAULT_GRID):
-                self.error = 'Please input a option from 1-9\n\n'
+                self.error = self.INVALID_OPTION.format(self.DEFAULT_GRID * self.DEFAULT_GRID)
             else:
                 self.options[option - 1] = 0
+
+        if self.state == 'NEW':
+            handle_player_name(resp)
+        else:
+            handle_options(resp)
 
         return True
 
