@@ -62,7 +62,13 @@ class GamePlay(object):
         def check_horizontal():
             return any([check_row(x) for x in range(self.DEFAULT_GRID)])
 
-        return any([check_horizontal()])
+        def check_col(x):
+            return all([owned_by_current_player(y, x) for y in range(self.DEFAULT_GRID)])
+
+        def check_vertical():
+            return any([check_col(col) for col in range(self.DEFAULT_GRID)])
+
+        return any([check_horizontal(), check_vertical()])
 
     def next_step(self, resp):
         def handle_player_name(resp):
