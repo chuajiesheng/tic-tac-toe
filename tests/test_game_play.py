@@ -65,19 +65,28 @@ def test_input_after_prompt(gameplay_in_play):
 
 
 def test_invalid_input_after_prompt(gameplay_in_play):
+    current_player = gameplay_in_play.current_player
+
     gameplay_in_play.next_step('hello')
     assert gameplay_in_play.prompt().startswith('Please input a option from 1-9.')
+    assert current_player == gameplay_in_play.current_player
 
 
 def test_too_big_input_after_prompt(gameplay_in_play):
+    current_player = gameplay_in_play.current_player
+
     gameplay_in_play.next_step('500')
     assert gameplay_in_play.prompt().startswith('Please input a option from 1-9.')
+    assert current_player == gameplay_in_play.current_player
 
 
 def test_handle_already_placed_box(gameplay_in_play):
+    current_player = gameplay_in_play.current_player
+
     gameplay_in_play.options[4] = 0
     gameplay_in_play.next_step('5')
     assert gameplay_in_play.prompt().startswith('Option taken. Please choose another option.')
+    assert current_player == gameplay_in_play.current_player
 
 
 def test_change_player(gameplay_in_play):
