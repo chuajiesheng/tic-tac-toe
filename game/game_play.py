@@ -54,11 +54,10 @@ class GamePlay(object):
         def handle_options(resp):
             option = resp.isdigit() and int(resp)
             within_limits = option and 0 <= option <= (self.DEFAULT_GRID * self.DEFAULT_GRID)
-            already_taken = not within_limits or self.options[option - 1] is not None
 
             if not within_limits:
                 self.error = self.INVALID_OPTION.format(self.DEFAULT_GRID * self.DEFAULT_GRID)
-            elif already_taken:
+            elif self.options[option - 1] is not None:
                 self.error = self.OPTION_TAKEN
             else:
                 self.options[option - 1] = 0
