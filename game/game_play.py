@@ -4,7 +4,9 @@ class GamePlay(object):
         self.players = []
 
     def prompt(self):
-        yield 'Enter name for Player 1:\n>> '
+        no_of_players = len(self.players)
+        if no_of_players < 2:
+            yield 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
 
     def next_step(self, resp):
         self.players.append(resp)
