@@ -10,6 +10,7 @@ class Main:
             resp = input(self.game_play.prompt())
             has_next = self.game_play.next_step(resp)
             if not has_next:
+                print(self.game_play.prompt())
                 break
 
 

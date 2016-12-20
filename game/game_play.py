@@ -25,8 +25,10 @@ class GamePlay(object):
             no_of_players = len(self.players)
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
-        else:
+        elif self.state == 'PLAY':
             return get_error() + self.get_grid(self.current_player)
+        else:
+            return 'Congratulations {}! You have won.'.format(self.players[self.current_player])
 
     def get_grid(self, next_player):
         def x_or_o(xy, state):
@@ -52,7 +54,7 @@ class GamePlay(object):
 
         return self.CHOICE_PROMPT.format(grid_str, player_name, self.PLAYER_SHAPE[next_player])
 
-    def check_win(self):
+    def current_player_won(self):
         def owned_by_current_player(x, y):
             return self.options[(x * self.DEFAULT_GRID) + y] == self.current_player
 
@@ -78,6 +80,10 @@ class GamePlay(object):
         def next_player():
             self.current_player = 1 if self.current_player == 0 else 0
 
+        def win():
+            self.state = 'WON'
+            return True
+
         def handle_options(resp):
             option = resp.isdigit() and int(resp)
             within_limits = option and 0 <= option <= (self.DEFAULT_GRID * self.DEFAULT_GRID)
@@ -88,13 +94,13 @@ class GamePlay(object):
                 self.error = self.OPTION_TAKEN
             else:
                 self.options[option - 1] = self.current_player
-                self.check_win()
-                next_player()
+                game_finished = self.current_player_won() and win()
+                game_finished or next_player()
 
         if self.state == 'NEW':
             handle_player_name(resp)
         else:
             handle_options(resp)
 
-        return True
+        return self.state is not 'WON'
 
