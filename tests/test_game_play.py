@@ -161,3 +161,11 @@ def test_winning(gameplay_in_play):
     gameplay_in_play.options[4] = 0
     gameplay_in_play.next_step('7')
     assert gameplay_in_play.prompt() == 'Congratulations one! You have won.'
+
+
+def test_draw(gameplay_in_play):
+    gameplay_in_play.options = [0, 0, 1,
+                                1, 1, None,
+                                0, 0, 1]
+    gameplay_in_play.next_step('6')
+    assert gameplay_in_play.prompt() == 'Game ended. No one won.'

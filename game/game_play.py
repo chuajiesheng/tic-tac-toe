@@ -12,13 +12,13 @@ class GamePlay(object):
         self.state = 'NEW'
         self.players = []
         self.options = [None] * (self.DEFAULT_GRID * self.DEFAULT_GRID)
-        self.error = ''
+        self.banner = ''
         self.current_player = 0
 
     def prompt(self):
-        def get_error():
-            current_error = self.error
-            self.error = ''
+        def get_banner():
+            current_error = self.banner
+            self.banner = ''
             return current_error
 
         if self.state == 'NEW':
@@ -26,9 +26,9 @@ class GamePlay(object):
             if no_of_players < 2:
                 return 'Enter name for Player {}:\n>> '.format(no_of_players + 1)
         elif self.state == 'PLAY':
-            return get_error() + self.get_grid(self.current_player)
+            return get_banner() + self.get_grid(self.current_player)
         else:
-            return 'Congratulations {}! You have won.'.format(self.players[self.current_player])
+            return get_banner()
 
     def get_grid(self, next_player):
         def x_or_o(xy, state):
@@ -82,20 +82,29 @@ class GamePlay(object):
 
         def win():
             self.state = 'WON'
+            self.banner = 'Congratulations {}! You have won.'.format(self.players[self.current_player])
             return True
+
+        def no_more_option_left():
+            no_more_option = len([x for x in self.options if x is None]) < 1
+            if no_more_option:
+                self.state = 'WON'
+                self.banner = 'Game ended. No one won.'.format(self.players[self.current_player])
+
+            return no_more_option
 
         def handle_options(resp):
             option = resp.isdigit() and int(resp)
             within_limits = option and 0 <= option <= (self.DEFAULT_GRID * self.DEFAULT_GRID)
 
             if not within_limits:
-                self.error = self.INVALID_OPTION.format(self.DEFAULT_GRID * self.DEFAULT_GRID)
+                self.banner = self.INVALID_OPTION.format(self.DEFAULT_GRID * self.DEFAULT_GRID)
             elif self.options[option - 1] is not None:
-                self.error = self.OPTION_TAKEN
+                self.banner = self.OPTION_TAKEN
             else:
                 self.options[option - 1] = self.current_player
                 game_finished = self.current_player_won() and win()
-                game_finished or next_player()
+                game_finished or no_more_option_left() or next_player()
 
         if self.state == 'NEW':
             handle_player_name(resp)
