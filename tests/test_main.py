@@ -67,3 +67,26 @@ def test_gameplay_loop(monkeypatch):
 
     m.start()
     assert len(new_game_play.players) == 2
+
+
+def test_gameplay_end_loop(monkeypatch):
+    monkeypatch.setitem(__builtins__, 'input', lambda x: x)
+
+    def prompt(self):
+        self.prompt_called_times += 1
+        return 'end'
+
+    def next_step(self, resp):
+        return False
+
+    NewGamePlay.prompt = prompt
+    NewGamePlay.next_step = next_step
+
+    new_game_play = NewGamePlay()
+    new_game_play.prompt_called_times = 0
+
+    m = Main()
+    m.game_play = new_game_play
+
+    m.start()
+    assert new_game_play.prompt_called_times == 2
