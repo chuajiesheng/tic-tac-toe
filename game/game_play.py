@@ -17,9 +17,9 @@ class GamePlay(object):
 
     def prompt(self):
         def get_banner():
-            current_error = self.banner
+            banner = self.banner
             self.banner = ''
-            return current_error
+            return banner
 
         if self.state == 'NEW':
             no_of_players = len(self.players)
