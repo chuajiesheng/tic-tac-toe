@@ -3,13 +3,13 @@ import pytest
 
 
 def test_prompt():
-    g = GamePlay()
+    g = GamePlay(3)
     first_prompt = g.prompt()
     assert first_prompt == 'Enter name for Player 1:\n>> '
 
 
 def test_save_player():
-    g = GamePlay()
+    g = GamePlay(3)
     new_player = 'Player X'
     g.next_step(new_player)
     assert len(g.players) == 1
@@ -17,14 +17,14 @@ def test_save_player():
 
 
 def test_need_two_player():
-    g = GamePlay()
+    g = GamePlay(3)
     g.players = ['one']
     next_prompt = g.prompt()
     assert next_prompt == 'Enter name for Player 2:\n>> '
 
 
 def test_print_change_state():
-    g = GamePlay()
+    g = GamePlay(3)
     g.players = ['one']
     assert g.next_step('two')
     assert g.state.is_play()
@@ -32,7 +32,7 @@ def test_print_change_state():
 
 @pytest.fixture(scope='function')
 def gameplay_in_play():
-    g = GamePlay()
+    g = GamePlay(3)
     g.players = ['one', 'two']
     g.state.val = 'PLAY'
     return g

@@ -7,7 +7,7 @@ class GamePlay(object):
     INVALID_OPTION = 'Please input a option from 1-{}.\n\n'
     OPTION_TAKEN = 'Option taken. Please choose another option.\n\n'
 
-    def __init__(self, size=3):
+    def __init__(self, size):
         self.state = State()
         self.board = Board(size)
         self.players = []

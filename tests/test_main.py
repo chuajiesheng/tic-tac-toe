@@ -19,7 +19,7 @@ def test_gameplay_prompt(monkeypatch):
     NewGamePlay.prompt = prompt
     new_game_play = NewGamePlay()
 
-    m = Main()
+    m = Main(3)
     m.game_play = new_game_play
 
     m.start()
@@ -35,7 +35,7 @@ def test_gameplay_next_step(monkeypatch):
     NewGamePlay.next_step = next_step
     new_game_play = NewGamePlay()
 
-    m = Main()
+    m = Main(3)
     m.game_play = new_game_play
 
     m.start()
@@ -62,7 +62,7 @@ def test_gameplay_loop(monkeypatch):
     new_game_play = NewGamePlay()
     new_game_play.players = []
 
-    m = Main()
+    m = Main(3)
     m.game_play = new_game_play
 
     m.start()
@@ -85,7 +85,7 @@ def test_gameplay_end_loop(monkeypatch):
     new_game_play = NewGamePlay()
     new_game_play.prompt_called_times = 0
 
-    m = Main()
+    m = Main(3)
     m.game_play = new_game_play
 
     m.start()

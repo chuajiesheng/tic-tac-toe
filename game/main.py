@@ -1,8 +1,10 @@
 from game import GamePlay
+from game import Board
 import sys
 
+
 class Main:
-    def __init__(self, size=3):
+    def __init__(self, size):
         self.game_play = GamePlay(size)
 
     def start(self):
@@ -16,8 +18,10 @@ class Main:
 
 if __name__ == '__main__':
     args = sys.argv
+
+    d = None
     if len(args) > 1:
         d = args[1].isdigit() and int(args[1])
 
-    m = Main(d)
+    m = Main(d or Board.DEFAULT_GRID)
     m.start()

@@ -5,7 +5,7 @@ class Board(object):
         1: 'o'
     }
 
-    def __init__(self, size=DEFAULT_GRID):
+    def __init__(self, size):
         self.grid = size
         self.options = [None] * (self.grid * self.grid)
 
