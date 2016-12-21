@@ -1,9 +1,9 @@
 from game import GamePlay
-
+import sys
 
 class Main:
-    def __init__(self):
-        self.game_play = GamePlay()
+    def __init__(self, size=3):
+        self.game_play = GamePlay(size)
 
     def start(self):
         while True:
@@ -15,5 +15,9 @@ class Main:
 
 
 if __name__ == '__main__':
-    m = Main()
+    args = sys.argv
+    if len(args) > 1:
+        d = args[1].isdigit() and int(args[1])
+
+    m = Main(d)
     m.start()
