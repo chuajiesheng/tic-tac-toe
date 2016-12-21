@@ -49,7 +49,7 @@ def test_prompt_for_play(gameplay_in_play):
 
 
 def test_grid_with_one_answer(gameplay_in_play):
-    gameplay_in_play.options[4] = 0
+    gameplay_in_play.board.options[4] = 0
     assert gameplay_in_play.prompt() == '1 | 2 | 3\n' \
                                         '-----------\n' \
                                         '4 | x | 6\n' \
@@ -61,7 +61,7 @@ def test_grid_with_one_answer(gameplay_in_play):
 
 def test_input_after_prompt(gameplay_in_play):
     gameplay_in_play.next_step('2')
-    assert gameplay_in_play.options[1] == 0
+    assert gameplay_in_play.board.options[1] == 0
 
 
 def test_invalid_input_after_prompt(gameplay_in_play):
@@ -83,7 +83,7 @@ def test_too_big_input_after_prompt(gameplay_in_play):
 def test_handle_already_placed_box(gameplay_in_play):
     current_player = gameplay_in_play.current_player
 
-    gameplay_in_play.options[4] = 0
+    gameplay_in_play.board.options[4] = 0
     gameplay_in_play.next_step('5')
     assert gameplay_in_play.prompt().startswith('Option taken. Please choose another option.')
     assert current_player == gameplay_in_play.current_player
@@ -101,70 +101,70 @@ def test_change_player(gameplay_in_play):
 
 
 def test_horizontal_winning_combi(gameplay_in_play):
-    gameplay_in_play.options[0] = 0
-    gameplay_in_play.options[1] = 0
-    gameplay_in_play.options[2] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[0] = 0
+    gameplay_in_play.board.options[1] = 0
+    gameplay_in_play.board.options[2] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_horizontal_winning_combi_2(gameplay_in_play):
-    gameplay_in_play.options[3] = 0
-    gameplay_in_play.options[4] = 0
-    gameplay_in_play.options[5] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[3] = 0
+    gameplay_in_play.board.options[4] = 0
+    gameplay_in_play.board.options[5] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_horizontal_winning_combi_3(gameplay_in_play):
-    gameplay_in_play.options[6] = 0
-    gameplay_in_play.options[7] = 0
-    gameplay_in_play.options[8] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[6] = 0
+    gameplay_in_play.board.options[7] = 0
+    gameplay_in_play.board.options[8] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_vertical_winning_combi(gameplay_in_play):
-    gameplay_in_play.options[0] = 0
-    gameplay_in_play.options[3] = 0
-    gameplay_in_play.options[6] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[0] = 0
+    gameplay_in_play.board.options[3] = 0
+    gameplay_in_play.board.options[6] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_vertical_winning_combi_2(gameplay_in_play):
-    gameplay_in_play.options[1] = 0
-    gameplay_in_play.options[4] = 0
-    gameplay_in_play.options[7] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[1] = 0
+    gameplay_in_play.board.options[4] = 0
+    gameplay_in_play.board.options[7] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_vertical_winning_combi_3(gameplay_in_play):
-    gameplay_in_play.options[2] = 0
-    gameplay_in_play.options[5] = 0
-    gameplay_in_play.options[8] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[2] = 0
+    gameplay_in_play.board.options[5] = 0
+    gameplay_in_play.board.options[8] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_diagonal_winning_combi(gameplay_in_play):
-    gameplay_in_play.options[0] = 0
-    gameplay_in_play.options[4] = 0
-    gameplay_in_play.options[8] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[0] = 0
+    gameplay_in_play.board.options[4] = 0
+    gameplay_in_play.board.options[8] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_diagonal_winning_combi_2(gameplay_in_play):
-    gameplay_in_play.options[2] = 0
-    gameplay_in_play.options[4] = 0
-    gameplay_in_play.options[6] = 0
-    assert gameplay_in_play.current_player_won()
+    gameplay_in_play.board.options[2] = 0
+    gameplay_in_play.board.options[4] = 0
+    gameplay_in_play.board.options[6] = 0
+    assert gameplay_in_play.board.player_won(0)
 
 
 def test_winning(gameplay_in_play):
-    gameplay_in_play.options[2] = 0
-    gameplay_in_play.options[4] = 0
+    gameplay_in_play.board.options[2] = 0
+    gameplay_in_play.board.options[4] = 0
     gameplay_in_play.next_step('7')
     assert gameplay_in_play.prompt() == 'Congratulations one! You have won.'
 
 
 def test_draw(gameplay_in_play):
-    gameplay_in_play.options = [0, 0, 1,
+    gameplay_in_play.board.options = [0, 0, 1,
                                 1, 1, None,
                                 0, 0, 1]
     gameplay_in_play.next_step('6')
