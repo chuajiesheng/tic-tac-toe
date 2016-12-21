@@ -6,6 +6,8 @@ class GamePlay(object):
     CHOICE_PROMPT = "{}\n{}, choose a box to place an '{}' into\n>> "
     INVALID_OPTION = 'Please input a option from 1-{}.\n\n'
     OPTION_TAKEN = 'Option taken. Please choose another option.\n\n'
+    WIN_BANNER = 'Congratulations {}! You have won.'
+    DRAW_BANNER = 'Game ended. No one won.'
 
     def __init__(self, size):
         self.state = State()
@@ -45,14 +47,14 @@ class GamePlay(object):
 
         def win():
             self.state.move()
-            self.banner = 'Congratulations {}! You have won.'.format(self.players[self.current_player])
+            self.banner = self.WIN_BANNER.format(self.players[self.current_player])
             return True
 
         def no_more_option_left():
             no_more_option = self.board.have_no_more_option()
             if no_more_option:
                 self.state.move()
-                self.banner = 'Game ended. No one won.'.format(self.players[self.current_player])
+                self.banner = self.DRAW_BANNER.format(self.players[self.current_player])
 
             return no_more_option
 
