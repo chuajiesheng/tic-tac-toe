@@ -1,5 +1,4 @@
-from game import State
-from game import Board
+from game import Board, State
 
 
 class GamePlay(object):
